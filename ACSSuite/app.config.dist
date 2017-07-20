@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <configSections>
+      <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net"/>
+    </configSections>
+    <connectionStrings>
+      <add name="ACS4Ingest" connectionString="Data Source=localhost;Initial Catalog=ACS4Ingest;User ID=yourusername;Password=yourpassword;" providerName="System.Data.SqlClient"/>
+    </connectionStrings>
+
+  <appSettings>
+    <add key="ACS_PACKAGING_SERVER" value="http://acs4server" />
+    <add key="ACS_ECTB_DISTRIBUTORID" value="urn:uuid:acs4guid"/>
+    <add key="ACS_ECTB_SECRET_KEY" value="secretkey"/>
+    <add key="ACS_ECTB_BUILTIN_DISTRIBUTORID" value="urn:uuid:00000000-0000-0000-0000-000000000001" />
+    <add key="ACS_ECTB_BUILTIN_SECRET_KEY" value="secretkey"/>
+    <add key="AZURE_STORAGE_ACCT" value="DefaultEndpointsProtocol=https;AccountName=yourblobaccountname;AccountKey=yourblobaccountkey;" />
+    <add key="AZURE_BLOB_CONTAINER" value="yourblobcontainername" />
+
+    <add key="LOCAL_STAGING_PATH" value="D:\ACS4Ingest" />
+    <add key="BATCH_SIZE" value="1" />
+    <add key="DELETE_FROM_FTP" value="false" />
+    <add key="MAX_FILE_SIZE" value="73400320" />
+
+    <!-- THESE OPTIONS ARE NOT CURRENTLY USED -->
+    <add key="DEBUG_MODE" value="false"/>
+    <add key="DEBUG_LOCAL_CATALOG_FILE_ECTB_DISTRIBUTOR" value="D:\ACS4Ingest\acscatalogeCTBDistributor.xml" />
+    <add key="DEBUG_LOCAL_CATALOG_FILE_BUILTIN_DISTRIBUTOR" value="D:\ACS4Ingest\acscatalogBuiltInDistributor.xml" />
+
+    <!-- THESE OPTIONS ARE NOT CURRENTLY USED -->
+    <add key="PushMonitorEnabled" value="false" />
+    <add key="PushMonitorUrl" value="" />
+  </appSettings>
+  <startup>
+    <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5" />
+  </startup>
+  <system.data>
+    <DbProviderFactories>
+      <remove invariant="MySql.Data.MySqlClient" />
+      <add name="MySQL Data Provider" invariant="MySql.Data.MySqlClient" description=".Net Framework Data Provider for MySQL" type="MySql.Data.MySqlClient.MySqlClientFactory, MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d" />
+    </DbProviderFactories>
+  </system.data>
+  
+
+  <log4net>
+    <appender name="ConsoleAppender" type="log4net.Appender.ConsoleAppender">
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%date{ABSOLUTE} [%thread] %level %logger - %message%newline"/>
+      </layout>
+    </appender>
+    <appender name="RollingFileAppender" type="log4net.Appender.RollingFileAppender">
+      <file value="D:\ACS4Ingest\logs\acs4ingestlog.txt"/>
+      <appendToFile value="true"/>
+      <rollingStyle value="Size"/>
+      <maxSizeRollBackups value="2"/>
+      <maximumFileSize value="1000KB"/>
+      <staticLogFileName value="true"/>
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%date %level %logger - %message%newline"/>
+      </layout>
+      <!--<threshold value="Info" />-->
+      <threshold value="ALL" />
+    </appender>
+    <root>
+      <level value="ALL"/>
+      <appender-ref ref="ConsoleAppender"/>
+      <appender-ref ref="RollingFileAppender"/>
+    </root>
+    <logger name="ACS4Ingest">
+      <level value="ALL"/>
+    </logger>
+  </log4net>
+  
+</configuration>
